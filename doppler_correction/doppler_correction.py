@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Tue Sep 10 12:29:57 2019
@@ -39,7 +38,7 @@ orb_params_cenx3={'P':2.086*day2sec,'e':0,'asini':39.653,
 orb_params_xtej1946={'P':172.218*day2sec,'e':0.286,'asini':466,
 'w':4.782,'T90':58182.27*day2sec}
 
-orb_params_s0243 = {'P': 27.698899**day2sec, 'e': 0.1029, 'asini': 115.531, 'w': np.deg2rad(-74.05), 'T90': np.float(58115.597*day2sec)} #https://gammaray.nsstc.nasa.gov/gbm/science/pulsars/lightcurves/swiftj0243.html
+orb_params_s0243 = {'P': 27.698899*day2sec, 'e': 0.1029, 'asini': 115.531, 'w': np.deg2rad(-74.05), 'T90': np.float(58115.597*day2sec)} #https://gammaray.nsstc.nasa.gov/gbm/science/pulsars/lightcurves/swiftj0243.html
 
 
 def Tp_from_T90(T_90,e,P):
@@ -202,71 +201,5 @@ def correct_times(fitsfile,orb_params,time_orig_col='time'):
         hdul[0].header.comments['timesys']='tbd with orb correction'
         hdul[1].data[time_orig_col]=new_time
         hdul.flush()  # changes are written back to original.fits
-
-
-
-
-
-#
-#def doppler_factor(time,P,T_p,e,w,asini):
-#    '''
-#    P=period,sec
-#    asini in light seconds
-#    time, T_p - in seconds
-#    '''
-#    mu=2*np.pi/P
-#    K=mu*asini/np.sqrt(1-e**2)
-#
-#    M=mu*(time-T_p)
-#
-#    func=lambda E: E-e*np.sin(E)-M
-#    init_guess=M+e*np.sin(M)+e**2/M*np.sin(2*M) #argyle04
-#    #init_guess=M+e*np.sin(M)+e**2/2*np.sin(2*M) #another source
-#
-#    E=fsolve(func,init_guess)[0]
-#
-#    v=2*np.arctan(np.sqrt( (1+e)/(1-e) )*np.tan(E/2) )
-#
-#    V_R=K*(e*np.cos(w)+np.cos(v+w))
-#
-#    beta=V_R
-#
-#    factor=np.sqrt( (1+beta)/(1-beta) )
-#
-#    r=asini*(1-e**2)/(1+e*np.cos(v))
-#
-#    #Peiod_observed=factor* Period_real; Period_real=Period_observad/factor
-#    #=> freq_obs=freq_real/factor; f_real=factor*freq_obs.  !!!! V_r might be negative !!!!!
-#    return factor,v,r
-#
-#def apply_doppler(time,frequency_init,frequency_init_error,P,T_p,e,w,asini, inverse=False):
-#    '''
-#    if inverse=False, than f_new=factor*f_initial. So, we use inverse=Flase if
-#    we want REAL FREQUENCY from OBSERVED (frequency_init -- observer frequency)
-#
-#    if inverse=True, than  f_new=f_initial/factor, So, we use inverse=True if
-#    we want OBSERVED FREQUENCY from REAL (frequency_init--- real (intrinsic) frequency of pulsar)
-#    '''
-#
-#    N=len(frequency_init)
-#    frequency_new=np.zeros(N)
-#    frequency_error_new=np.zeros(N)
-#    factor_array=np.zeros(N)
-#    r_array=np.zeros(N)
-#
-#    for i in range(N):
-#        factor,_,r=doppler_factor(time[i],P,T_p,e,w,asini)
-#        if inverse==True:
-#            coef=1/factor
-#        else:
-#            coef=factor
-#
-#
-#        frequency_new[i]=coef*frequency_init[i]
-#        frequency_error_new[i]=coef*frequency_init_error[i]
-#        factor_array[i]=coef
-#        r_array[i]=r
-#    return frequency_new, frequency_error_new, factor_array,r_array
-
 
 
